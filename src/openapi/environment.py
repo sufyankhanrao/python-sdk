@@ -4,4 +4,4 @@ import enum
 
 
 class BitadventurerApiEnvironment(enum.Enum):
-    DEFAULT = "https://test-calls.free.beeceptor.com"
+    DEFAULT = "http://localhost:3000/oaf"

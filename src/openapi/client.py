@@ -6,6 +6,7 @@ from .types.model import Model
 import httpx
 from .core.client_wrapper import SyncClientWrapper
 from .core.request_options import RequestOptions
+from .core.serialization import convert_and_respect_annotation_metadata
 from .core.pydantic_utilities import parse_obj_as
 from json.decoder import JSONDecodeError
 from .core.api_error import ApiError
@@ -79,30 +80,12 @@ class BitadventurerApi:
         )
 
     def send_body(
-        self,
-        *,
-        first_property: bool,
-        second_property: typing.Optional[bool] = OMIT,
-        third_property: typing.Optional[bool] = OMIT,
-        fourth_property: typing.Optional[bool] = OMIT,
-        fifth_property: typing.Optional[bool] = OMIT,
-        sixth_property: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, request: Model, request_options: typing.Optional[RequestOptions] = None
     ) -> Model:
         """
         Parameters
         ----------
-        first_property : bool
-
-        second_property : typing.Optional[bool]
-
-        third_property : typing.Optional[bool]
-
-        fourth_property : typing.Optional[bool]
-
-        fifth_property : typing.Optional[bool]
-
-        sixth_property : typing.Optional[bool]
+        request : Model
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -114,31 +97,24 @@ class BitadventurerApi:
 
         Examples
         --------
-        from bitadventurer import BitadventurerApi
+        from bitadventurer import BitadventurerApi, Cat
 
         client = BitadventurerApi(
             header_param="YOUR_HEADER_PARAM",
         )
         client.send_body(
-            first_property=True,
-            second_property=True,
-            third_property=True,
-            fourth_property=True,
-            fifth_property=True,
-            sixth_property=True,
+            request=Cat(
+                name="string",
+                lives=1,
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             "send-body",
             method="POST",
-            json={
-                "firstProperty": first_property,
-                "secondProperty": second_property,
-                "thirdProperty": third_property,
-                "fourthProperty": fourth_property,
-                "fifthProperty": fifth_property,
-                "sixthProperty": sixth_property,
-            },
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=Model, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -263,30 +239,12 @@ class AsyncBitadventurerApi:
         )
 
     async def send_body(
-        self,
-        *,
-        first_property: bool,
-        second_property: typing.Optional[bool] = OMIT,
-        third_property: typing.Optional[bool] = OMIT,
-        fourth_property: typing.Optional[bool] = OMIT,
-        fifth_property: typing.Optional[bool] = OMIT,
-        sixth_property: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, request: Model, request_options: typing.Optional[RequestOptions] = None
     ) -> Model:
         """
         Parameters
         ----------
-        first_property : bool
-
-        second_property : typing.Optional[bool]
-
-        third_property : typing.Optional[bool]
-
-        fourth_property : typing.Optional[bool]
-
-        fifth_property : typing.Optional[bool]
-
-        sixth_property : typing.Optional[bool]
+        request : Model
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -300,7 +258,7 @@ class AsyncBitadventurerApi:
         --------
         import asyncio
 
-        from bitadventurer import AsyncBitadventurerApi
+        from bitadventurer import AsyncBitadventurerApi, Cat
 
         client = AsyncBitadventurerApi(
             header_param="YOUR_HEADER_PARAM",
@@ -309,12 +267,10 @@ class AsyncBitadventurerApi:
 
         async def main() -> None:
             await client.send_body(
-                first_property=True,
-                second_property=True,
-                third_property=True,
-                fourth_property=True,
-                fifth_property=True,
-                sixth_property=True,
+                request=Cat(
+                    name="string",
+                    lives=1,
+                ),
             )
 
 
@@ -323,14 +279,9 @@ class AsyncBitadventurerApi:
         _response = await self._client_wrapper.httpx_client.request(
             "send-body",
             method="POST",
-            json={
-                "firstProperty": first_property,
-                "secondProperty": second_property,
-                "thirdProperty": third_property,
-                "fourthProperty": fourth_property,
-                "fifthProperty": fifth_property,
-                "sixthProperty": sixth_property,
-            },
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=Model, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
